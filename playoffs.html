@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Torneio de Matrecos</title>
+    <link rel="stylesheet" type="text/css" href="data/styles.css">
+    <link rel="icon" href="data/img/logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+</head>
+
+<body>
+    <!-- <h1>Torneio de Matrecos</h1>
+    <br> -->
+    <div class="container">
+        <div class="row d-none p-3" id="meias" style="font-size: 20px;">
+            <div class="col-lg-6 col-md-12 col-sm-12 mb-3 box">
+                <div id="meia-1"></div>
+                <div id="negra-1"></div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12 mb-3 box">
+                <div id="meia-2"></div>
+                <div id="negra-2"></div>
+            </div>
+            <div class="row" style="padding-top: 2%; font-size: larger; display: inline;">
+                <div style="justify-content: center; display: flex;">
+                    <button class="btn btn-success" type="button" style="margin: 2px 2px 2px 2px ;"
+                        onclick="event.preventDefault(); processResults()">Processar
+                        Meias</button>
+                    <button class="btn btn-warning develop" type="button" style="margin: 2px 2px 2px 2px ;"
+                        onclick="event.preventDefault(); gerarMeias()">Gerar
+                        Resultados Aleatórios</button>
+                </div>
+            </div>
+        </div>
+        <div class="row " id="final" style="padding-top: 2%;">
+        </div>
+        <div class="row" style="padding-top: 2%; font-size: larger; display: inline;">
+            <div style="justify-content: center; display: flex;">
+                <button class="btn btn-dark d-none" id="winner" type="button"
+                    onclick="event.preventDefault(); findWinner()">Encontrar
+                    Vencedor</button>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: center; margin-top: 5px;">
+            <button class="btn btn-light type=" style="margin: 2px 2px 2px 2px ;"
+                onclick="window.location.href='games.html'">Voltar a
+                Jogos</button>
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+    <script src="data/js/playoffs.js"></script>
+</body>
+
+</html>
