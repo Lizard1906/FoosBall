@@ -63,5 +63,5 @@ body {
 }
 
 .develop { /* class to not allow generate except on dev */
-    /* display: none !important; */
+    display: none !important;
 }
