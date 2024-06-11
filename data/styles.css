@@ -9,7 +9,7 @@ body {
 
 .box {
     background-color: rgb(190, 190, 190);
-    width: fit-content;
+    /* width: fit-content; */
     border-radius: 20px 20px 20px 20px;
     border: 20px solid rgb(190, 190, 190);
 }

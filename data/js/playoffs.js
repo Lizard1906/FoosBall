@@ -43,11 +43,13 @@ function criarMeias(semiFinalistas) {
     let Meias1 = '';
     jogos1.forEach((jogo, index) => {
         Meias1 += `  
-            <div style="margin-bottom: -20px; display:flex">
-                <div class="teamJogo home">${jogo.equipa1}</div>
-                <input type="text" id="m1j${index + 1}e1" style="height: 35px; width: 30px; text-align:center" min="0">  - 
-                <input type="text" id="m1j${index + 1}e2" style="height: 35px; width: 30px; text-align:center" min="0"> 
-                <div class="teamJogo away">${jogo.equipa2}</div>
+            <div class="row">
+                <div class="col-4 teamJogo home">${jogo.equipa1}</div>
+                <div class="col-3 d-flex justify-content-center">
+                    <input type="text" id="m1j${index + 1}e1" style="height: 35px; width: 30px; text-align:center" min="0">  - 
+                    <input type="text" id="m1j${index + 1}e2" style="height: 35px; width: 30px; text-align:center" min="0"> 
+                </div>
+                <div class="col-4 teamJogo away">${jogo.equipa2}</div>
             </div>                
             <br>`
     });
@@ -57,11 +59,13 @@ function criarMeias(semiFinalistas) {
     let Meias2 = '';
     jogos2.forEach((jogo, index) => {
         Meias2 += `  
-            <div style="margin-bottom: -20px; display:flex">
-                <div class="teamJogo home">${jogo.equipa1}</div>
-                <input type="text" id="m2j${index + 1}e1" style="height: 35px; width: 30px; text-align:center" min="0">  - 
-                <input type="text" id="m2j${index + 1}e2" style="height: 35px; width: 30px; text-align:center" min="0"> 
-                <div class="teamJogo away">${jogo.equipa2}</div>
+            <div class="row">
+                <div class="col-4 teamJogo home">${jogo.equipa1}</div>
+                <div class="col-3 d-flex justify-content-center">
+                    <input type="text" id="m2j${index + 1}e1" style="height: 35px; width: 30px; text-align:center" min="0">  - 
+                    <input type="text" id="m2j${index + 1}e2" style="height: 35px; width: 30px; text-align:center" min="0"> 
+                </div>
+                <div class="col-4 teamJogo away">${jogo.equipa2}</div>
             </div>                
             <br>`
     });
@@ -73,11 +77,13 @@ function criarMeias(semiFinalistas) {
 function criarFinal(finalistas) {
     const finalissima = { equipa1: finalistas[0], equipa2: finalistas[1], vencedor: null };
     let Final = `            
-    <div id="finalissima" style="display:flex; justify-content: center" class="final">
-        <div class="home">${finalissima.equipa1}</div>
-        <input type="text" id="final1" style="height: 60px; width: 60px; text-align:center" min="0">  - 
-        <input type="text" id="final2" style="height: 60px; width: 60px; text-align:center" min="0"> 
-        <div class="away">${finalissima.equipa2}</div>
+    <div id="finalissima" class="final row">
+        <div class="text-center col-12 col-lg-4">${finalissima.equipa1}</div>
+        <div class="col-12 col-lg-3 d-flex justify-content-center">
+            <input type="text" id="final1" style="height: 60px; width: 60px; text-align:center" min="0">  - 
+            <input type="text" id="final2" style="height: 60px; width: 60px; text-align:center" min="0"> 
+        </div>
+        <div class="text-center col-12 col-lg-4">${finalissima.equipa2}</div>
     </div>                
     <br>
     `;

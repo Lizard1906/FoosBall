@@ -14,6 +14,7 @@ let teams = [];
 let players = [];
 if (data) {
     teams = data.teams;
+    players = data.players;
 } else {
     data = {};
 }
