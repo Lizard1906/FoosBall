@@ -48,6 +48,7 @@ function saveEquipas() {
 
 function resetEquipas() {
     teams = [];
+    players = [];
     saveEquipas();
     listEquipas();
 }
