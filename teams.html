@@ -20,30 +20,30 @@
                 <div class="container">
                     <h5 style="text-align: center; padding-bottom: 5px;">Nova Equipa</h5>
                     <form id="new-team">
-                        <input type="text" id="player1" name="player1" placeholder="Jogador 1">
+                        <input type="text" id="player1" name="player1" placeholder="Player 1">
                         <br>
                         <br>
-                        <input type="text" id="player2" name="player2" placeholder="Jogador 2">
+                        <input type="text" id="player2" name="player2" placeholder="Player 2">
                         <br><br>
                         <button class="btn btn-outline-success addButtom" type="submit"
-                            onclick="event.preventDefault(); newTeam(player1.value, player2.value)">Adicionar</button>
+                            onclick="event.preventDefault(); newTeam(player1.value, player2.value)">Add</button>
                     </form>
                 </div>
             </div>
             <div class="col-4 box" style="margin: 5% auto; width: fit-content;">
                 <div class="container">
-                    <h5 style="text-align: center; padding-bottom: 5px;">Equipas Registadas</h5>
+                    <h5 style="text-align: center; padding-bottom: 5px;">Registered Teams</h5>
                     <div id="list-teams"></div>
                 </div>
             </div>
                 <div class="col-4 box" style="margin: 5% auto; width: fit-content;">
                 <div class="container">
-                    <h5 style="text-align: center; padding-bottom: 5px;">Remover Equipa</h5>
+                    <h5 style="text-align: center; padding-bottom: 5px;">Remove Team</h5>
                     <form id="remove-team">
-                        <input type="text" id="teamID" name="teamID" placeholder="Letra da Equipa">
+                        <input type="text" id="teamID" name="teamID" placeholder="Team Letter">
                         <br><br>
                         <button class="btn btn-outline-danger addButtom" type="submit"
-                            onclick="event.preventDefault(); deleteTeam(teamID.value)">Remover</button>
+                            onclick="event.preventDefault(); deleteTeam(teamID.value)">Remove</button>
                     </form>
                 </div>
             </div>
@@ -52,9 +52,9 @@
 
 
         <div style="margin:auto; width: fit-content;">
-            <button type="submit" class="btn btn-danger" onclick="event.preventDefault(); resetEquipas()">Limpar Equipas </button>
-            <button type="button" class="btn btn-success" onclick="window.location.href='games.html'">Avançar para Jogos</button>
-            <button type="button" class="btn btn-light" onclick="window.location.href='index.html'">Voltar</button>
+            <button type="submit" class="btn btn-danger" onclick="event.preventDefault(); resetEquipas()">Reset Teams </button>
+            <button type="button" class="btn btn-success" onclick="window.location.href='games.html'">Advance to Games</button>
+            <button type="button" class="btn btn-light" onclick="window.location.href='index.html'">Go Back</button>
             <button type="submit" class="btn btn-warning develop" onclick="event.preventDefault(); gerarEquipas()">Gerar Equipas Aleatórias</button>
         </div>
 

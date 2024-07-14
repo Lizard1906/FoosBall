@@ -68,7 +68,7 @@ function criarJogos() {
 
     let jogosList = '';
     rondas.forEach((ronda) => {
-        jogosList += `<h3>Ronda ${ronda.numero}</h3>`
+        jogosList += `<h3>Round ${ronda.numero}</h3>`
         ronda.jogos.forEach((jogo, index) => {
             jogosList += `  
             <div style="margin-bottom: -20px; display:flex">
@@ -217,18 +217,18 @@ function printTabela() {
           <table class="tabela">
             <tr>
               <th>#</th>
-              <th>Equipa</th>
-              <th>J</th>
-              <th>V</th>
-              <th>D</th>
-              <th>DG</th>
-              <th>GM</th>
-              <th>GS</th>
+              <th>Team</th>
+              <th>PL</th>
+              <th>W</th>
+              <th>L</th>
+              <th>GD</th>
+              <th>GF</th>
+              <th>GA</th>
             </tr>
             ${getDataRows(tabela)}
             <tr>
             <td class="qualificado" colspan="2"></td>
-            <td colspan="6">Qualificado para o Play-off</td>
+            <td colspan="6">Qualified to the Play-offs</td>
             </tr>
             </table>
       </div>
