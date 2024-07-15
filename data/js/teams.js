@@ -33,7 +33,9 @@ function listEquipas() {
     let teamsList = '';
     teams.forEach(team => {
         teamsList += `
-            <div><b>[${team.id}]</b> ${team.j1} X ${team.j2}</div>
+            <div class="d-flex" style="margin: 5px 0; justify-content: space-between"> ${team.j1} X ${team.j2}
+            <button class="btn btn-danger fas fa-trash" onclick="deleteTeam('${team.id}')"></button>
+            </div>
         `;
     });
     lista.innerHTML = teamsList;
