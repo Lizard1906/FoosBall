@@ -94,8 +94,11 @@ function criarJogos() {
 }
 
 function criarTabela() {
-    const tabela = [...teams]; // Copia as equipas para um novo array
     const dados = { J: 0, V: 0, D: 0, DG: 0, GM: 0, GS: 0 };
+    let tabela = teams.map(equipa => ({
+            team: equipa.id,
+            dados: { J: 0, V: 0, D: 0, DG: 0, GM: 0, GS: 0 }
+        }));
     tabela.forEach((equipa) => {
         equipa.dados = dados;
     });
@@ -118,18 +121,16 @@ function processResults() {
     let rondas = JSON.parse(localStorage.getItem('foosball')).rondas;
 
     rondas.forEach((ronda) => {
-        console.log('Ronda ' + ronda.numero)
         ronda.jogos.forEach((jogo, index) => {
-            console.log('Jogo ' + (index + 1))
             const e1 = document.getElementById(`r${ronda.numero}j${index + 1}e1`).value;
             const e2 = document.getElementById(`r${ronda.numero}j${index + 1}e2`).value;
             if (e1 == '' || e2 == '') {
                 console.log('Jogo incompleto')
             } else {
                 // Acessar os dados da tabela de cada equipa
-                const equipa1 = tabela.find((equipa) => equipa.id === jogo.equipa1.id);
-                const equipa2 = tabela.find((equipa) => equipa.id === jogo.equipa2.id);
-                console.log(equipa1.id + ' (' + e1 + '-' + e2 + ') ' + equipa2.id)
+                const equipa1 = tabela.find((equipa) => equipa.team === jogo.equipa1.id);
+                const equipa2 = tabela.find((equipa) => equipa.team === jogo.equipa2.id);
+                // console.log(equipa1.id + ' (' + e1 + '-' + e2 + ') ' + equipa2.id)
 
                 // Atualizar os dados da tabela com os resultados
                 equipa1.dados.J += 1;
@@ -243,10 +244,12 @@ function getDataRows(tabela) {
 
     tabela.forEach((equipa, index) => {
         const classQualificado = index < numQualificados ? 'qualificado' : '';
+        const j1 = teams.find(team => team.id === equipa.team).j1;
+        const j2 = teams.find(team => team.id === equipa.team).j2;
         html += `
           <tr class="${classQualificado} linhas">
               <td>${index + 1}</td>
-              <td>${equipa.j1} X ${equipa.j2}</td>
+              <td>${j1} X ${j2}</td>
               <td>${equipa.dados.J}</td>
               <td>${equipa.dados.V}</td>
               <td>${equipa.dados.D}</td>

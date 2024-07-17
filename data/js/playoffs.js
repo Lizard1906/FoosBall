@@ -1,7 +1,12 @@
 let data = JSON.parse(localStorage.getItem('foosball'));
-let tabela;
+let tabela = [];
+let teams;
 if (data) {
-    tabela = data.tabelaFinal;
+    const tabelaFinal = data.tabelaFinal;
+    const teams = data.teams;
+    tabelaFinal.forEach((teamOnTable => {
+        tabela.push(teams.find(team => team.id === teamOnTable.team))
+    }))
 }
 
 const qualificados = [];
@@ -145,11 +150,11 @@ function processResults() {
                 console.log('jogo incompleto')
             } else {
                 if (parseInt(e1) > parseInt(e2)) {
-                    console.log(jogo.equipa1 + ' vence o jogo'+ index +' por ' + e1 + '-'+e2)
+                    console.log(jogo.equipa1 + ' vence o jogo' + index + ' por ' + e1 + '-' + e2)
                     jogos1[i].vencedor = jogo.equipa1;
                 }
                 else {
-                    console.log(jogo.equipa2 + ' vence o jogo'+ index +' por ' + e1 + '-'+e2)
+                    console.log(jogo.equipa2 + ' vence o jogo' + index + ' por ' + e1 + '-' + e2)
                     jogos1[i].vencedor = jogo.equipa2;
                 }
             }
@@ -303,7 +308,7 @@ function findWinner() {
         }
         data.winner = finalissima.vencedor;
         localStorage.setItem('foosball', JSON.stringify(data));
-    
+
         window.location.href = 'winner.html';
     }
 }

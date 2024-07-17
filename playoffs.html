@@ -48,8 +48,7 @@
             </div>
         </div>
         <div style="display: flex; justify-content: center; margin-top: 5px;">
-            <button class="btn btn-light type="
-                onclick="window.location.href='league.html'">Back to Games</button>
+            <button class="btn btn-light type=" onclick="backToGames()">Back to Games</button>
         </div>
 
 
@@ -63,6 +62,16 @@
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
     <script src="data/js/playoffs.js"></script>
+
+    <script>
+
+        function backToGames() {
+            let format = JSON.parse(localStorage.getItem('foosball')).format
+            console.log(format)
+            window.location.href = format + '.html';
+        }
+    </script>
+
 </body>
 
 </html>

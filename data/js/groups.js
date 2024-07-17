@@ -51,17 +51,14 @@ function dividirGrupos() {
 
 function exibirResultados() {
     const results = JSON.parse(localStorage.getItem('foosball')).results;
-    results.forEach((grupo) => {
-        grupo.rondas.forEach((ronda) => {
-            ronda.jogos.forEach((jogo, index) => {
-                const golos1 = jogo.resultado.equipa1;
-                const golos2 = jogo.resultado.equipa2;
-                const celulaResultado1 = document.getElementById(`r${grupo.nome}r${ronda.numero}j${index + 1}e1`).value = golos1;
-                const celulaResultado2 = document.getElementById(`r${grupo.nome}r${ronda.numero}j${index + 1}e2`).value = golos2;
-            });
+    results.forEach((ronda) => {
+        ronda.jogos.forEach((jogo, index) => {
+            const golos1 = jogo.resultado.equipa1;
+            const golos2 = jogo.resultado.equipa2;
+            const celulaResultado1 = document.getElementById(`r${ronda.numero}j${index + 1}e1`).value = golos1;
+            const celulaResultado2 = document.getElementById(`r${ronda.numero}j${index + 1}e2`).value = golos2;
         });
     });
-    console.log(results)
 }
 
 function criarJogos() {
@@ -100,8 +97,6 @@ function criarJogos() {
         }
         grupoRondas.push({ nome: grupo.nome, rondas: rondas });
     });
-    console.log(grupoRondas)
-
 
     let rondas = []
     grupoRondas.forEach(grupo => {
@@ -115,7 +110,6 @@ function criarJogos() {
             }
         })
     })
-    console.log(rondas)
 
     const metadeJogos = (rondas.length + rondas.length % 2) / 2;
 
@@ -148,8 +142,10 @@ function criarJogos() {
 function criarTabela() {
     data.tabelas = []
     data.grupos.forEach(grupo => {
-        console.log(grupo)
-        let tabela = [...grupo.teams]
+        let tabela = grupo.teams.map(equipa => ({
+            team: equipa.id,
+            dados: { J: 0, V: 0, D: 0, DG: 0, GM: 0, GS: 0 }
+        }));
         const dados = { J: 0, V: 0, D: 0, DG: 0, GM: 0, GS: 0 };
         tabela.forEach((equipa) => {
             equipa.dados = dados;
@@ -157,7 +153,7 @@ function criarTabela() {
         data.tabelas.push(
             {
                 group: grupo.group,
-                tabela: [...grupo.teams]
+                tabela: tabela,
             }
         )
         localStorage.setItem('foosball', JSON.stringify(data));
@@ -200,10 +196,12 @@ function exibirTabelas() {
                 </tr>
                 ${tabela.map((equipa, index) => {
             const classQualificado = index < numQualificados ? 'qualificado' : '';
+            const j1 = teams.find(team => team.id === equipa.team).j1;
+            const j2 = teams.find(team => team.id === equipa.team).j2;
             return `
                         <tr class="${classQualificado}">
                             <th scope="row">${index + 1}</th>
-                            <td>${equipa.j1} X ${equipa.j2}</td>
+                            <td>${j1} X ${j2}</td>
                             <td>${equipa.dados.J}</td>
                             <td>${equipa.dados.V}</td>
                             <td>${equipa.dados.D}</td>
@@ -247,8 +245,8 @@ function processResults() {
 
             const tabelaToFind = tabelas.find(tabela => tabela.group === jogo.grupo)
             const tabelaGrupo = tabelaToFind.tabela
-            const equipa1dados = tabelaGrupo.find(e => e.j1 === equipa1.j1 && e.j2 === equipa1.j2);
-            const equipa2dados = tabelaGrupo.find(e => e.j1 === equipa2.j1 && e.j2 === equipa2.j2);
+            const equipa1dados = tabelaGrupo.find(e => e.team === equipa1.id);
+            const equipa2dados = tabelaGrupo.find(e => e.team === equipa2.id);
 
             equipa1dados.dados.J++;
             equipa2dados.dados.J++;
@@ -269,8 +267,16 @@ function processResults() {
                 equipa2dados.dados.V++;
                 equipa1dados.dados.D++;
             }
+
+            // Armazenar o resultado do jogo em rondas
+            jogo.resultado = {
+                equipa1: parseInt(golos1, 10),
+                equipa2: parseInt(golos2, 10)
+            };
         });
         data.tabelas = tabelas;
+        data.results = resultados;
+        console.log(data)
         localStorage.setItem('foosball', JSON.stringify(data));
     });
 
@@ -293,24 +299,4 @@ function cleanResults() {
     inputs.forEach(input => {
         input.value = '';
     });
-}
-
-function findWinner() {
-    const winners = [];
-
-    const grupos = ['grupoA', 'grupoB'];
-    grupos.forEach(grupo => {
-        const tabela = data[`tabela_${grupo}`];
-        tabela.sort((a, b) => {
-            if (a.dados.V === b.dados.V) {
-                return b.dados.DG - a.dados.DG;
-            }
-            return b.dados.V - a.dados.V;
-        });
-        winners.push(tabela[0], tabela[1]);
-    });
-
-    data.playoffs = winners;
-    localStorage.setItem('foosball', JSON.stringify(data));
-    document.getElementById('winner').classList.remove('d-none');
 }

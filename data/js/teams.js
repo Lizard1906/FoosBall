@@ -81,7 +81,7 @@ function cleanResults() {
     console.log(rondas)
 
     rondas = [];
-    data.results = rondas;
+    data.rondas = [];
     localStorage.setItem('foosball', JSON.stringify(data));
 
 }
