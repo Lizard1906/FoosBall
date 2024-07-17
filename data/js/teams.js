@@ -59,7 +59,7 @@ function gerarEquipas() {
     resetEquipas();
     let players = names;
     let numPlayers = players.length;
-    let numTeams = 8;
+    let numTeams = 12;
     let i = 0;
     while (i < numTeams) {
         let j1 = players[Math.floor(Math.random() * numPlayers)];

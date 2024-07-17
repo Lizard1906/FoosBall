@@ -63,6 +63,10 @@ body {
     background-color: rgb(79, 255, 79);
 }
 
+.withchance {
+    background-color: rgb(255, 243, 79);
+}
+
 .develop { /* class to not allow generate except on dev */
     display: none !important;
 }

@@ -6,44 +6,55 @@ if (data) {
 }
 
 const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+let numGroups;
 
 document.addEventListener('DOMContentLoaded', function () {
     dividirGrupos();
     criarJogos();
     criarTabela();
     exibirResultados();
-    // gerarResultados();
-    // processResults();
 });
 
 data.grupos = [];
 
 function dividirGrupos() {
     // 4-8 equipas -> 2 grupos
-    // 9-12 equipas -> 3 grupos
-    // 13-16 equipas -> 4 grupos
+    // 9-11 equipas -> 3 grupos
+    // 12-16 equipas -> 4 grupos
 
 
     const numTeams = teams.length;
-    let numGroups;
 
     if (numTeams <= 8) {
         numGroups = 2;
-    } else if (numTeams <= 12) {
+    } else if (numTeams <= 11) {
         numGroups = 3;
     } else {
         numGroups = 4;
     }
 
-    const groupSize = Math.ceil(numTeams / numGroups);
+    const baseGroupSize = Math.floor(numTeams / numGroups);
+    const remainder = numTeams % numGroups; // Equipes que não são distribuídas uniformemente
+
+    let startIndex = 0;
+
+    const tablesContainer = document.getElementById('tables');
+    tablesContainer.innerHTML = ''; // Limpar qualquer conteúdo existente
 
     for (let i = 0; i < numGroups; i++) {
-        data.grupos.push(
-            {
-                group: letters[i],
-                teams: teams.slice(i * groupSize, (i + 1) * groupSize)
-            }
-        );
+        const additionalTeam = (i < remainder) ? 1 : 0; // Distribuir as equipes restantes nos primeiros grupos
+        const currentGroupSize = baseGroupSize + additionalTeam;
+
+        data.grupos.push({
+            group: letters[i],
+            teams: teams.slice(startIndex, startIndex + currentGroupSize)
+        });
+
+        const tableDiv = document.createElement('div');
+        tableDiv.id = `table${letters[i]}`;
+        tablesContainer.appendChild(tableDiv);
+
+        startIndex += currentGroupSize;
     }
 
     localStorage.setItem('foosball', JSON.stringify(data));
@@ -162,7 +173,6 @@ function criarTabela() {
 }
 
 function exibirTabelas() {
-
     data.tabelas.forEach(grupo => {
         grupo.tabela.sort((a, b) => {
             if (a.dados.V !== b.dados.V) {
@@ -177,10 +187,15 @@ function exibirTabelas() {
 
     localStorage.setItem('foosball', JSON.stringify(data))
 
-    const numQualificados = 2;
+    
+    let numQualificados = 1;
+    if (numGroups == 2 && teams.length >= 6) {
+        numQualificados = 2;
+    }
 
     data.tabelas.forEach(grupo => {
         const tabela = [...grupo.tabela];
+        let classDescription = 'd-none';
         let tabelaHtml = `
         <div class="row">
             <table class="tabela">
@@ -195,7 +210,21 @@ function exibirTabelas() {
                     <th>GA</th>
                 </tr>
                 ${tabela.map((equipa, index) => {
-            const classQualificado = index < numQualificados ? 'qualificado' : '';
+            let classQualificado = index < numQualificados ? 'qualificado' : '';
+            if (data.tabelas.length == 3) {
+                if (teams.length == 9 && index == 1) {
+                    classQualificado = 'withchance';
+                    classDescription = '';
+                }
+                if (teams.length == 10 && tabela.length == 4 && index == 1) {
+                    classQualificado = 'qualificado';
+                }
+                if (teams.length == 11 && tabela.length == 4 && index == 1) {
+                    classQualificado = 'withchance';
+                    classDescription = '';
+                }
+
+            }
             const j1 = teams.find(team => team.id === equipa.team).j1;
             const j2 = teams.find(team => team.id === equipa.team).j2;
             return `
@@ -214,6 +243,10 @@ function exibirTabelas() {
                 <tr>
                     <td class="qualificado" colspan="2"></td>
                     <td colspan="6">Qualified to the Play-offs</td>
+                </tr>
+                <tr id="yellow" class="${classDescription}">
+                    <td class="withchance" colspan="2"></td>
+                    <td colspan="6">With chances to go through</td>
                 </tr>
             </table>
         </div>
