@@ -1,26 +1,73 @@
 let data = JSON.parse(localStorage.getItem('foosball'));
-let tabela = [];
-let teams;
-if (data) {
-    const tabelaFinal = data.tabelaFinal;
-    const teams = data.teams;
-    tabelaFinal.forEach((teamOnTable => {
-        tabela.push(teams.find(team => team.id === teamOnTable.team))
-    }))
-}
 
 const qualificados = [];
 const finalistas = [];
-if (tabela.length < 7) {
-    qualificados.push(tabela[0]);
-    qualificados.push(tabela[1]);
-} else {
-    qualificados.push(tabela[0]);
-    qualificados.push(tabela[1]);
-    qualificados.push(tabela[2]);
-    qualificados.push(tabela[3]);
+
+// league format
+if (data.format === 'league') {
+    let tabela = [];
+    let teams;
+    if (data) {
+        const tabelaFinal = data.tabelaFinal;
+        const teams = data.teams;
+        tabelaFinal.forEach((teamOnTable => {
+            tabela.push(teams.find(team => team.id === teamOnTable.team))
+        }))
+    }
+
+    if (tabela.length < 7) {
+        qualificados.push(tabela[0]);
+        qualificados.push(tabela[1]);
+    } else {
+        qualificados.push(tabela[0]);
+        qualificados.push(tabela[1]);
+        qualificados.push(tabela[2]);
+        qualificados.push(tabela[3]);
+    }
+    console.log(qualificados)
 }
-console.log(qualificados)
+
+// groups and knockouts format
+if (data.format === 'groups') {
+    console.log(data)
+    console.log(data.teams.length)
+    // 4-5 equipas passa 1 por cada um dos 2 grupos
+    // 6-8 equipas passa 2 por cada um dos 2 grupos
+    // 9-11 equipas passa 1 por cada um dos 3 grupos + 1
+    // 12-16 equipas passa 1 por cada um dos 4 grupos
+    data.tabelas.forEach(group => {
+        qualificados.push(data.teams.find(team => team.id === group.tabela[0].team))
+        if (data.teams.length >= 6 && data.teams.length <= 8) {
+            qualificados.push(data.teams.find(team => team.id === group.tabela[1].team))
+        }
+    })
+    if (data.tabelas.length == 3) {
+        // é necessário acrescentar o melhor 2º lugar
+        let best2nd = data.teams.find(team => team.id === data.tabelas[0].tabela[1].team);
+        let best2ndData = data.tabelas[0].tabela[1].dados
+        let maxLength = data.tabelas[0].tabela.length
+        let isLastGroup = false
+        data.tabelas.forEach((group, index) => {
+            if (group.tabela.length == maxLength) {
+                newData = group.tabela[1].dados
+                if (newData.V >= best2ndData.V) {
+                    if (newData.DG >= best2ndData.DG) {
+                        if (newData.GM >= best2ndData.GM) {
+                            best2nd = data.teams.find(team => team.id === group.tabela[1].team)
+                            best2ndData = newData
+                            if (index == 2) isLastGroup = true
+                        }
+                    }
+                }
+            }
+        })
+        if (!isLastGroup) {
+            qualificados.unshift(best2nd)
+        } else {
+            qualificados.push(best2nd)
+        }
+    }
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     if (qualificados.length == 4) {
@@ -128,11 +175,13 @@ function processResults() {
             jogos1.push({ equipa1: jogos1[0].equipa1, equipa2: jogos1[0].equipa2, vencedor: null })
             let Negra1 = '';
             Negra1 += `  
-            <div style="margin-bottom: -20px; display:flex">
-                <div class="teamJogo home">${jogos1[2].equipa1}</div>
-                <input type="text" id="n1e1" style="height: 35px; width: 30px; text-align:center" min="0">  - 
-                <input type="text" id="n1e2" style="height: 35px; width: 30px; text-align:center" min="0"> 
-                <div class="teamJogo away">${jogos1[2].equipa2}</div>
+            <div class="row">
+                <div class="col-4 teamJogo home">${jogos1[2].equipa1}</div>
+                <div class="col-3 d-flex justify-content-center">
+                    <input type="text" id="n1e1" style="height: 35px; width: 30px; text-align:center" min="0">  - 
+                    <input type="text" id="n1e2" style="height: 35px; width: 30px; text-align:center" min="0"> 
+                </div>
+                <div class="col-4 teamJogo away">${jogos1[2].equipa2}</div>
             </div>                
             <br>`
             document.getElementById('negra-1').innerHTML = Negra1;
@@ -205,11 +254,13 @@ function processResults() {
             jogos2.push({ equipa1: jogos2[0].equipa1, equipa2: jogos2[0].equipa2, vencedor: null })
             let Negra2 = '';
             Negra2 += `  
-                <div style="margin-bottom: -20px; display:flex">
-                    <div class="teamJogo home">${jogos2[2].equipa1}</div>
-                    <input type="text" id="n2e1" style="height: 35px; width: 30px; text-align:center" min="0">  - 
-                    <input type="text" id="n2e2" style="height: 35px; width: 30px; text-align:center"min="0"> 
-                    <div class="teamJogo away">${jogos2[2].equipa2}</div>
+                <div class="row">
+                    <div class="col-4 teamJogo home">${jogos2[2].equipa1}</div>
+                    <div class="col-3 d-flex justify-content-center">
+                        <input type="text" id="n2e1" style="height: 35px; width: 30px; text-align:center" min="0">  - 
+                        <input type="text" id="n2e2" style="height: 35px; width: 30px; text-align:center"min="0"> 
+                    </div>                
+                    <div class="col-4 teamJogo away">${jogos2[2].equipa2}</div>
                 </div>                
                 <br>`
             document.getElementById('negra-2').innerHTML = Negra2;
