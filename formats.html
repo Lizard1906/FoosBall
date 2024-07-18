@@ -39,7 +39,8 @@
 
 
             <div style="margin:auto; width: fit-content;">
-                <button type="button" class="btn btn-light" onclick="window.location.href='teams.html'">Back To Teams</button>
+                <button type="button" class="btn btn-light" onclick="window.location.href='teams.html'">Back To
+                    Teams</button>
             </div>
 
         </div>
@@ -52,13 +53,22 @@
             let data = JSON.parse(localStorage.getItem('foosball'));
             let newdata = {};
             newdata.players = data.players
-            newdata.teams = data.teams
+            newdata.teams = shuffleArray(data.teams)
             newdata.results = []
 
             function chooseFormat(format) {
                 newdata.format = format;
                 localStorage.setItem('foosball', JSON.stringify(newdata));
                 window.location.href = format + '.html';
+            }
+
+            function shuffleArray(array) {
+                // algoritmo de Fisher-Yates
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
             }
         </script>
 </body>
